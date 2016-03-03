@@ -6,5 +6,8 @@ public class LocalTrain extends Train {
 		super(n, s, t);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	public String toString(){
+		return number + "L";
+	}
 }

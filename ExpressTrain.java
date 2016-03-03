@@ -6,4 +6,7 @@ public class ExpressTrain extends Train {
 		super(n, s, t);
 	}
 
+	public String toString(){
+		return number + "E";
+	}
 }

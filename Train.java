@@ -3,7 +3,7 @@ package AE1;
 public abstract class Train extends Thread{
 	
 	//instance variables
-	private int number;
+	protected int number;
 	private double speed;
 	private RailTrack track;
 	private TrackPortion position;
@@ -61,5 +61,7 @@ public abstract class Train extends Thread{
 			System.out.println("Sleep interrupted");
 		}
 	}
+	
+	//public abstract String toString();
 	
 }

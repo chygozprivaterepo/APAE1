@@ -25,14 +25,11 @@ public class RailTrack {
 		Condition segmentFull = segment.getCondition();
 		lock.lock();
 		try{
-			//while(getTrainsAtTrackPortion(segments.get(0)).size() == segment.getCapacity()){
 			while(segments.get(0).getTrains().size() == segment.getCapacity()){
 				segmentFull.await();
-				//System.out.println("Segment 1 is currently full and awaiting free track");
 			}
 			t.setPosition(segment);
 			trains.add(t);
-			//System.out.println("Train "+t.getNumber()+ " has been added");
 		}
 		catch(InterruptedException e){}
 		finally{
@@ -48,26 +45,13 @@ public class RailTrack {
 		return segments;
 	}
 	
-	/*
-	public List<Train> getTrainsAtTrackPortion(TrackPortion p){
-		List<Train> temp = new ArrayList<Train>();
-		for(Train t: trains){
-			if(t.getPosition()== p){
-				temp.add(t);
-			}
-		}
-		return temp;
-	}
-	*/
-	
 	public String toString(){
 		String s = "";
 		for(TrackPortion seg: segments){
-			//List<Train> segTrains = getTrainsAtTrackPortion(seg);
 			List<Train> segTrains = seg.getTrains();
 			String trainNos = "";
 			for(Train tr: segTrains){
-				trainNos += tr.getNumber() + ",";
+				trainNos += tr + ",";
 			}
 			s += "|----"+seg+"--"+trainNos+"----|";
 		}

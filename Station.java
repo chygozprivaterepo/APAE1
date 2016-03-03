@@ -5,8 +5,8 @@ public class Station extends TrackPortion{
 	private String name;
 	
 	//constructor
-	public Station(Integer length, Integer capacity, Integer pos, String name) {
-		super(length, capacity, pos);
+	public Station(Integer length, Integer capacity,  String name) {
+		super(length, capacity);
 		this.name = name;
 	}
 	
