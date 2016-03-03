@@ -3,10 +3,10 @@ package AE1;
 public abstract class Train extends Thread{
 	
 	//instance variables
-	protected int number;
-	protected double speed;
-	protected RailTrack track;
-	protected TrackPortion position;
+	private int number;
+	private double speed;
+	private RailTrack track;
+	private TrackPortion position;
 	
 	//constructor to initialize a train object
 	public Train(int n, double s, RailTrack t){
@@ -34,11 +34,28 @@ public abstract class Train extends Thread{
 	
 	public void run(){
 		try{
-			while(position != null){
+			int index = 0;
+			TrackPortion previousPosition = null; //at start, there is no previous position
+			while(true) //while train is still on the track
+			{
+				track.getSegments().get(index).enter(this, previousPosition);
+				//System.out.println("Train "+number+" has entered segment "+index);
+				/*
+				if(previousPosition != null){
+					previousPosition.leave(this);
+				}
+				*/
 				int length = position.getLength();
 				int time =(int)(((double)(length) / speed)*1000);
 				Thread.sleep(time);
-				track.advanceTrain(this);
+				index++;
+				if (index == track.getSegments().size()){
+					position.leave(this);
+					position = null;
+					return;
+				}
+				previousPosition = position;
+				position = track.getSegments().get(index);
 			}
 		}catch(InterruptedException e){
 			System.out.println("Sleep interrupted");
