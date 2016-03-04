@@ -35,7 +35,8 @@ public class TrainMaker extends Thread{
 				else{//else create a local train
 					train = new LocalTrain(trainNumber, trainSpeed, railTrack);
 				}
-				railTrack.getPortions().get(0).isFull();
+				railTrack.getPortions().get(0).isFull(); //checks if the first station in the rail track is full
+								//if it is full, then the train maker class pauses while waiting for it to become free
 				train.start(); //start the train
 				int delay = new Random().nextInt(1000); //create a random time delay
 				Thread.sleep(delay); //delay the creation of the next train by the calculated time delay

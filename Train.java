@@ -56,12 +56,4 @@ public abstract class Train extends Thread{
 	}
 	
 	public abstract String toString();
-
-	/**
-	 * @return the track
-	 */
-	public RailTrack getTrack() {
-		return track;
-	}
-	
 }
