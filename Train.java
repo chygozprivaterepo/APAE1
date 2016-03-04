@@ -3,65 +3,65 @@ package AE1;
 public abstract class Train extends Thread{
 	
 	//instance variables
-	protected int number;
-	private double speed;
-	private RailTrack track;
-	private TrackPortion position;
+	protected int number; //represents train number
+	private double speed; //represents train speed
+	private RailTrack track; // represents the entire rail track
+	private TrackPortion position; //represents the train's current position on the track
 	
-	//constructor to initialize a train object
+	/**
+	 * constructor to initialize a train object
+	 * @param n the train number
+	 * @param s the train speed
+	 * @param t the rail track
+	 */
 	public Train(int n, double s, RailTrack t){
 		this.number = n;
 		this.speed = s;
 		this.track = t;
 	}
-
-	public TrackPortion getPosition(){
-		return this.position;
-	}
 	
+	/**
+	 * method to set the position of the train
+	 * @param p the position to be set to
+	 */
 	public void setPosition(TrackPortion p){
 		this.position = p;
 	}
 	
-	public int getNumber()
-	{
-		return number;
-	}
-	
-	public double getSpeed(){
-		return speed;
-	}
-	
+	/**
+	 * method that is called to start the train running
+	 */
 	public void run(){
 		try{
-			int index = 0;
+			int index = 0; //when train starts initially, it is at the first station in the rail track
 			TrackPortion previousPosition = null; //at start, there is no previous position
-			while(true) //while train is still on the track
+			while(true) //run continuously. Interrupted after train has passed the last station
 			{
-				track.getSegments().get(index).enter(this, previousPosition);
-				//System.out.println("Train "+number+" has entered segment "+index);
-				/*
-				if(previousPosition != null){
-					previousPosition.leave(this);
+				track.getPortions().get(index).enter(this, previousPosition); //get the track segment at position specified
+													//by index and try to enter that position
+				int length = position.getLength(); //get the length of the track at current position
+				int time =(int)(((double)(length) / speed)*1000); //compute the time that train will stay at current position
+				Thread.sleep(time); //sleep for specified time
+				index++; //index of the next position on the rail track to enter
+				if (index == track.getPortions().size()) //if end of rail track is reached
+				{ 
+					position.leave(this); //leave current position
+					return; //stop train's run by returning from method 
 				}
-				*/
-				int length = position.getLength();
-				int time =(int)(((double)(length) / speed)*1000);
-				Thread.sleep(time);
-				index++;
-				if (index == track.getSegments().size()){
-					position.leave(this);
-					position = null;
-					return;
-				}
-				previousPosition = position;
-				position = track.getSegments().get(index);
+				previousPosition = position; //set previous position to current position
 			}
 		}catch(InterruptedException e){
-			System.out.println("Sleep interrupted");
+			System.out.println("Sleep interrupted"); //print statement if sleep is interrupted
 		}
 	}
 	
-	//public abstract String toString();
+	public abstract String toString();
+
+	/**
+	 * @return the track
+	 */
+	public RailTrack getTrack() {
+		return track;
+	}
 	
 }

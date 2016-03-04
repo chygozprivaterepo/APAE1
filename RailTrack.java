@@ -1,60 +1,49 @@
 package AE1;
 
 import java.util.*;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * class that represents the entire rail track
+ * @author Chigozie Ekwonu
+ */
 public class RailTrack {
 
 	//instance variables
-	private List<TrackPortion> segments;
-	private List<Train> trains;
+	private List<TrackPortion> portions;  //list that stores all stations and segments that make up
+											//the entire rail track 
 	
+	/**
+	 * constructor that creates a rail track
+	 */
 	public RailTrack(){
-		segments = new ArrayList<TrackPortion>();
-		trains = new ArrayList<Train>();
+		portions = new ArrayList<TrackPortion>(); //create a list to hold the stations and segments
 	}
 	
+	/**
+	 * method to add a segment or station to the rail track
+	 * @param s
+	 */
 	public void addTrackPortion(TrackPortion s){
-		segments.add(s);
+		portions.add(s);
 	}
 	
-	public void addTrain(Train t){
-		TrackPortion segment = segments.get(0);
-		ReentrantLock lock = segment.getLock();
-		Condition segmentFull = segment.getCondition();
-		lock.lock();
-		try{
-			while(segments.get(0).getTrains().size() == segment.getCapacity()){
-				segmentFull.await();
-			}
-			t.setPosition(segment);
-			trains.add(t);
-		}
-		catch(InterruptedException e){}
-		finally{
-			lock.unlock();
-		}
+	/**
+	 * method to return the stations and segments that make up the rail track
+	 * @return the list of stations and segments
+	 */
+	public List<TrackPortion> getPortions(){
+		return portions;
 	}
 	
-	public void removeTrain(Train t){
-		trains.remove(t);
-	}
-	
-	public List<TrackPortion> getSegments(){
-		return segments;
-	}
-	
+	/**
+	 * method that returns a string representation of the rail track when it is to be printed out
+	 */
 	public String toString(){
 		String s = "";
-		for(TrackPortion seg: segments){
-			List<Train> segTrains = seg.getTrains();
-			String trainNos = "";
-			for(Train tr: segTrains){
-				trainNos += tr + ",";
-			}
-			s += "|----"+seg+"--"+trainNos+"----|";
+		for(TrackPortion seg: portions) //loop through all the stations and segments in the rail track
+		{
+			s += seg;
 		}
-		return s;
+		return s; //return string representation of rail track
 	}
 }
